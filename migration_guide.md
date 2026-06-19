@@ -89,19 +89,21 @@ def poll_and_trace(ai_model_metadata, test_session_id):
 
 ## 3. OPC-UA Mapping Guide
 
-OPC-UA is a modern, object-oriented industrial information model. Telemetry is represented by NodeIds (which contain namespaces and identifiers) containing complex variables (Process Variables).
+OPC-UA is an object-oriented industrial information model. Telemetry is represented by NodeIds (which contain namespaces and identifiers) containing complex variables (Process Variables).
 
 ### Mapping Nodes to Attributes
 
-OPC-UA variables map cleanly to OTel attributes because OPC-UA uses typed variables and structured namespaces.
+OPC-UA variables map to OTel attributes because OPC-UA uses typed variables and structured namespaces.
 
 | OPC-UA Node Path / NodeId | Physical AI Semantic Attribute | Description / Conversion |
 | :--- | :--- | :--- |
-| `ns=2;s=DeviceIdentifier` | `physical.sensor.target` | Maps the OPC-UA device string name. |
-| `ns=2;s=ModelCommand` | `ai.physical.command` | Maps the current active command variable string. |
-| `ns=2;s=ControlDeviation` | `physical.telemetry.deviation` | Directly maps to the double precision float. |
+| `ns=2;s=DeviceIdentifier` | `physical.sensor.target` | Maps the OPC-UA device string name (e.g. `"cnc-spindle-04"`). |
+| `ns=2;s=ModelCommand` | `ai.physical.command` | Maps the current active command variable string (e.g. `"SET_RPM"`). |
+| `ns=2;s=ControlDeviation` | `physical.telemetry.deviation` | Directly maps to the double precision float deviation. |
 | `ns=2;s=ExecutionStatus` | `physical.action.status` | Maps to the string representation (`completed`, `safety_abort`). |
 | `ns=2;s=AnomalyActive` (Event) | `physical.anomaly.type` | If active, maps the event name/type. |
+| `ns=2;s=OperatorOverride` (Boolean) | `ai.human.intervention` | Maps to the boolean intervention flag. |
+| `ns=2;s=OverrideValue` (String) | `ai.human.alteration` | Maps parameter modifications (e.g., `"spindle_speed_scale:80%"`). |
 
 ### Code Example: OPC-UA Subscription to OTel Span Generator (Node.js Concept)
 
@@ -109,9 +111,9 @@ OPC-UA variables map cleanly to OTel attributes because OPC-UA uses typed variab
 import { OPCUAClient, AttributeIds, ClientSubscription, ClientMonitoredItem } from "node-opcua";
 import { trace } from "@opentelemetry/api";
 
-const tracer = tracer.getTracer("opcua-bridge");
+const tracer = trace.getTracer("opcua-bridge");
 
-async function monitorOpcUa(sessionMetadata: { sessionId: string; modelName: string }) {
+async function monitorOpcUa(sessionMetadata: { sessionId: string; modelName: string; agentId: string }) {
   const client = OPCUAClient.create({ endpointMustExist: false });
   await client.connect("opc.tcp://192.168.1.100:4840");
   const session = await client.createSession();
@@ -136,21 +138,28 @@ async function monitorOpcUa(sessionMetadata: { sessionId: string; modelName: str
     const span = tracer.startSpan("OPC-UA Value Update");
     
     span.setAttributes({
-      // AI Decision & Intent
+      // 1. AGE Model & Decision & Simulation
       "ai.model.name": sessionMetadata.modelName,
-      "ai.intent.goal": "docking",
-      "ai.simulation.type": "kinematics",
-      "ai.simulation.result": "passed",
+      "ai.agent.id": sessionMetadata.agentId,
+      "ai.simulation.inputs": "target_feedrate:1500;material:aluminum_6061",
+      "ai.simulation.outputs": "deflection_limit_exceeded:false",
+      "ai.decision.material": "aluminum_6061",
       
-      // Control & Target
+      // 2. AGE Intent
+      "ai.intent.goal": "docking",
+      
+      // 3. Control, Target & Protocol
       "ai.physical.command": "MOVE_TO_JOINT_COORD",
       "physical.sensor.target": "robotic-joint-j3",
+      "industrial.protocol": "opc-ua",
       
-      // Action Outcome
+      // 4. Action Outcome
       "physical.telemetry.deviation": deviationVal,
       "physical.action.status": "completed",
       "physical.test.session_id": sessionMetadata.sessionId,
-      "physical.test.operator_mode": "autonomous"
+      
+      // 5. Human Interaction
+      "ai.human.intervention": false
     });
     
     if (deviationVal > 15.0) {
@@ -158,7 +167,10 @@ async function monitorOpcUa(sessionMetadata: { sessionId: string; modelName: str
         "physical.action.status": "safety_abort",
         "physical.anomaly.type": "joint_backlash",
         "physical.anomaly.severity": "critical",
-        "physical.anomaly.corrective_action": "emergency_stop"
+        "physical.anomaly.corrective_action": "emergency_stop",
+        "ai.human.intervention": true,
+        "ai.human.alteration": "operator_override_emergency_stop",
+        "external.interaction.type": "operator_stop"
       });
     }
     
@@ -166,3 +178,97 @@ async function monitorOpcUa(sessionMetadata: { sessionId: string; modelName: str
   });
 }
 ```
+
+---
+
+## 4. MTConnect Mapping Guide
+
+MTConnect is a standard, XML-based protocol designed for retrieving machine status and sensor telemetry from CNC machine tools and manufacturing equipment.
+
+### Mapping XML DataItems to Attributes
+
+MTConnect XML streams contain **Device** components composed of **DataItems** representing continuous samples or event states.
+
+| MTConnect XML Element | DataItem Type | Physical AI Semantic Attribute | Description / Conversion |
+| :--- | :--- | :--- | :--- |
+| `<Device name="...">` | Component Attribute | `physical.sensor.target` | Maps the machine name. |
+| `<ControllerMode>` | Event | `physical.test.operator_mode` | `AUTOMATIC` -> `"autonomous"`, `MANUAL` -> `"manual_override"`, `MANUAL_DATA_INPUT` -> `"human_in_the_loop"`. |
+| `<EmergencyStop>` | Event | `physical.action.status` | If value is `TRIGGERED` -> `"safety_abort"`, and sets `ai.human.intervention` to `true`. |
+| `<RotaryVelocity>` | Sample (Actual) | `physical.telemetry.deviation` | Calculate absolute delta: `|Actual - Command|` to yield deviation. |
+| `<PathFeedrate>` | Sample (Actual) | `ai.human.alteration` | Parse override scale (e.g. if feedrate override is active, log scale string `"feedrate_override:80%"`). |
+
+### Code Example: MTConnect XML Stream to OTel Converter (Python Concept)
+
+```python
+import xml.etree.ElementTree as ET
+from opentelemetry import trace
+
+tracer = trace.get_tracer("mtconnect-bridge")
+
+def process_mtconnect_xml(xml_payload, ai_context):
+    # Parse MTConnect XML Data
+    root = ET.fromstring(xml_payload)
+    
+    # Extract data elements
+    device_name = root.find(".//DeviceStream").attrib.get("name", "cnc-milling-01")
+    controller_mode = root.find(".//ControllerMode").text  # e.g., "AUTOMATIC"
+    estop_status = root.find(".//EmergencyStop").text       # e.g., "ARMED" or "TRIGGERED"
+    
+    # Calculate spindle speed deviation
+    commanded_rpm = float(root.find(".//RotaryVelocity[@subType='COMMANDED']").text)
+    actual_rpm = float(root.find(".//RotaryVelocity[@subType='ACTUAL']").text)
+    deviation = abs(commanded_rpm - actual_rpm)
+    
+    # Evaluate operator intervention
+    human_intervention = (controller_mode != "AUTOMATIC") or (estop_status == "TRIGGERED")
+    operator_mode = "autonomous" if controller_mode == "AUTOMATIC" else "manual_override"
+    
+    with tracer.start_as_current_span("MTConnect Telemetry Frame") as span:
+        span.set_attribute("ai.model.name", ai_context["model_name"])
+        span.set_attribute("ai.agent.id", ai_context["agent_id"])
+        span.set_attribute("ai.simulation.inputs", "spindle_target_rpm:" + str(commanded_rpm))
+        span.set_attribute("ai.decision.material", "aluminum_6061")
+        
+        span.set_attribute("ai.physical.command", "SET_RPM")
+        span.set_attribute("physical.sensor.target", device_name)
+        span.set_attribute("industrial.protocol", "mtconnect")
+        
+        span.set_attribute("physical.telemetry.deviation", deviation)
+        span.set_attribute("physical.action.status", "completed" if estop_status != "TRIGGERED" else "safety_abort")
+        span.set_attribute("physical.test.operator_mode", operator_mode)
+        span.set_attribute("ai.human.intervention", human_intervention)
+        
+        if human_intervention:
+            span.set_attribute("ai.human.alteration", "manual_override_mode_active")
+            span.set_attribute("external.interaction.type", "operator_stop" if estop_status == "TRIGGERED" else "manual_tuning")
+            
+        if deviation > 50.0:
+            span.set_attribute("physical.anomaly.type", "thermal_expansion")
+            span.set_attribute("physical.anomaly.severity", "warning")
+```
+
+---
+
+## 5. Logs Correlation Pipeline (Fluent Bit to OTel Collector)
+
+Fluent Bit harvesting edge machine logs (such as Linux syslog, ROS node output, or raw CNC debug logs) extracts trace propagation headers (`trace_id` / `span_id`) when available. 
+
+A standard Fluent Bit configuration formats log lines into JSON and links them to the OTel trace context:
+
+```
+[FILTER]
+    Name         parser
+    Match        cnc.*
+    Key_Name     log
+    Parser       json_with_trace_context
+
+[OUTPUT]
+    Name         opentelemetry
+    Match        *
+    Host         otel-collector.eks.local
+    Port         4318
+    Metrics_uri  /v1/metrics
+    Logs_uri     /v1/logs
+```
+
+The OpenTelemetry Collector correlates these logs and routes them to PhysiTrace's `POST /v1/logs` endpoint. This allows logs to be queried by their parent `traceId` using the query API (`GET /v1/logs?traceId=...`), aligning system-level logs directly with high-level AGE design sessions.
