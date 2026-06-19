@@ -1,0 +1,86 @@
+{
+  "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+  "spanId": "00f067aa0ba902b7",
+  "name": "Spindle Execution Cycle",
+  "kind": "SPAN_KIND_INTERNAL",
+  "startTimeUnixNano": 1781836673000000,
+  "endTimeUnixNano": 1781836673500000,
+  "attributes": [
+    {
+      "key": "ai.model.name",
+      "value": { "stringValue": "prometheus-age-v1" }
+    },
+    {
+      "key": "ai.model.version",
+      "value": { "stringValue": "1.2.0" }
+    },
+    {
+      "key": "ai.model.confidence",
+      "value": { "doubleValue": 0.95 }
+    },
+    {
+      "key": "ai.prompt.hash",
+      "value": { "stringValue": "sha256:d8a23e91122" }
+    },
+    {
+      "key": "ai.simulation.type",
+      "value": { "stringValue": "thermodynamics" }
+    },
+    {
+      "key": "ai.simulation.result",
+      "value": { "stringValue": "passed" }
+    },
+    {
+      "key": "ai.decision.material",
+      "value": { "stringValue": "aluminum_6061" }
+    },
+    {
+      "key": "ai.intent.goal",
+      "value": { "stringValue": "high_precision_milling" }
+    },
+    {
+      "key": "ai.intent.plan_step",
+      "value": { "stringValue": "step_3_milling" }
+    },
+    {
+      "key": "ai.physical.command",
+      "value": { "stringValue": "SET_RPM" }
+    },
+    {
+      "key": "physical.sensor.target",
+      "value": { "stringValue": "cnc-spindle-04" }
+    },
+    {
+      "key": "physical.action.status",
+      "value": { "stringValue": "completed" }
+    },
+    {
+      "key": "physical.action.duration_ms",
+      "value": { "doubleValue": 12500.0 }
+    },
+    {
+      "key": "physical.telemetry.deviation",
+      "value": { "doubleValue": 18.2 }
+    },
+    {
+      "key": "physical.anomaly.type",
+      "value": { "stringValue": "thermal_expansion" }
+    },
+    {
+      "key": "physical.anomaly.severity",
+      "value": { "stringValue": "warning" }
+    },
+    {
+      "key": "physical.anomaly.corrective_action",
+      "value": { "stringValue": "operator_alert" }
+    },
+    {
+      "key": "physical.test.session_id",
+      "value": { "stringValue": "session_20260619_01" }
+    },
+    {
+      "key": "physical.test.operator_mode",
+      "value": { "stringValue": "human_in_the_loop" }
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "traceId": "5c1a8e3d09a24bb181fa3d10c2e2831b",
+  "spanId": "1a08bcf19d4e5f22",
+  "name": "Robotic Joint Position Execution",
+  "kind": "SPAN_KIND_INTERNAL",
+  "startTimeUnixNano": 1781836712000000,
+  "endTimeUnixNano": 1781836712800000,
+  "attributes": [
+    {
+      "key": "ai.model.name",
+      "value": { "stringValue": "clint-arm-gpt4" }
+    },
+    {
+      "key": "ai.model.version",
+      "value": { "stringValue": "2.4.1-beta" }
+    },
+    {
+      "key": "ai.model.confidence",
+      "value": { "doubleValue": 0.72 }
+    },
+    {
+      "key": "ai.prompt.hash",
+      "value": { "stringValue": "sha256:d8b2d1844b20a" }
+    },
+    {
+      "key": "ai.simulation.type",
+      "value": { "stringValue": "kinematics" }
+    },
+    {
+      "key": "ai.simulation.result",
+      "value": { "stringValue": "failed" }
+    },
+    {
+      "key": "ai.intent.goal",
+      "value": { "stringValue": "docking" }
+    },
+    {
+      "key": "ai.intent.plan_step",
+      "value": { "stringValue": "align_actuator" }
+    },
+    {
+      "key": "ai.physical.command",
+      "value": { "stringValue": "MOVE_TO_JOINT_COORD" }
+    },
+    {
+      "key": "physical.sensor.target",
+      "value": { "stringValue": "robotic-joint-j3" }
+    },
+    {
+      "key": "physical.action.status",
+      "value": { "stringValue": "safety_abort" }
+    },
+    {
+      "key": "physical.action.duration_ms",
+      "value": { "doubleValue": 340.0 }
+    },
+    {
+      "key": "physical.telemetry.deviation",
+      "value": { "doubleValue": 0.045 }
+    },
+    {
+      "key": "physical.anomaly.type",
+      "value": { "stringValue": "joint_backlash" }
+    },
+    {
+      "key": "physical.anomaly.severity",
+      "value": { "stringValue": "critical" }
+    },
+    {
+      "key": "physical.anomaly.corrective_action",
+      "value": { "stringValue": "emergency_stop" }
+    },
+    {
+      "key": "physical.test.session_id",
+      "value": { "stringValue": "session_20260619_04" }
+    },
+    {
+      "key": "physical.test.operator_mode",
+      "value": { "stringValue": "autonomous" }
+    }
+  ]
+}
