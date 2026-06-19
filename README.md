@@ -1,14 +1,14 @@
-# Semantic Conventions for AGE (Artificial General Engineer)
+# AGE Observability Specification
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Status](https://img.shields.io/badge/Status-Draft-orange.svg)]()
 [![OTel Version](https://img.shields.io/badge/OTel_Spec-v1.24.0-green.svg)](https://opentelemetry.io/)
 
-This repository defines the open-source **Semantic Conventions for AGE (Artificial General Engineer)**. It provides a standardized framework for mapping machine learning decisions, simulated intent, physical execution, and real-world deviations within the [OpenTelemetry (OTel)](https://opentelemetry.io/) standard.
+This repository defines the open-source **AGE Observability Specification**. It provides a standardized framework for mapping machine learning decisions, simulated intent, physical execution, and real-world deviations within the [OpenTelemetry (OTel)](https://opentelemetry.io/) standard.
 
 ---
 
-## 💡 Why Semantic Conventions for AGE?
+## 💡 Why the AGE Observability Specification?
 
 Traditional observability tools (like OpenTelemetry, Datadog, or Dynatrace) are designed for pure software stacks: HTTP requests, database transactions, and microservice RPCs.
 
@@ -20,7 +20,7 @@ If a machine fails or deviates during testing, engineering teams need a **\"Blac
 - Did the AGE issue a faulty CNC instruction?
 - Or did the hardware joint suffer from mechanical backlash/wear?
 
-These semantic conventions solve this problem by providing a structured vocabulary to trace the entire path:
+This specification solves this problem by providing a structured vocabulary to trace the entire path:
 `Engineering Prompt` ──► `Simulation Results` ──► `Material Choices` ──► `Mechanical Commands` ──► `Physical Feedback (Deviations/Anomalies)`
 
 ---

@@ -1,4 +1,4 @@
-# Semantic Conventions for AGE (Artificial General Engineer): Specification
+# AGE Observability Specification: Technical Conventions
 
 **Status**: `Draft`
 
