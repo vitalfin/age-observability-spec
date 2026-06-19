@@ -12,7 +12,7 @@ This repository defines the open-source **AGE Observability Specification**. It 
 
 Traditional observability tools (like OpenTelemetry, Datadog, or Dynatrace) focus on pure software stacks: HTTP requests, database transactions, and microservice RPCs.
 
-In **AGE (Artificial General Engineering)** systems, AI models generate and analyze designs (CAD), run physical simulations (CAE), program shop floor manufacturing software (CAM), and orchestrate operations on physical machinery (MES/PLM). Deviations in this pipeline can cause catastrophic mechanical damage, product failures, or safety incidents.
+In **AGE (Artificial General Engineering)** systems across industries such as aerospace, robotics, healthcare, and manufacturing, AI models generate and analyze designs (CAD), run physical simulations (CAE), program shop floor manufacturing software (CAM), and orchestrate operations on physical machinery (MES/PLM). Deviations in this pipeline can cause catastrophic mechanical damage, product failures, or safety incidents.
 
 When a hardware failure or deviation occurs, teams need a **"Black Box" (Flight Data Recorder)** to audit:
 - Was the failure caused by incorrect CAE simulation inputs/outputs?
