@@ -19,8 +19,8 @@
       "value": { "doubleValue": 0.95 }
     },
     {
-      "key": "ai.prompt.hash",
-      "value": { "stringValue": "sha256:d8a23e91122" }
+      "key": "ai.agent.id",
+      "value": { "stringValue": "milling-agent-01" }
     },
     {
       "key": "ai.simulation.type",
@@ -31,16 +31,8 @@
       "value": { "stringValue": "passed" }
     },
     {
-      "key": "ai.decision.material",
-      "value": { "stringValue": "aluminum_6061" }
-    },
-    {
       "key": "ai.intent.goal",
       "value": { "stringValue": "high_precision_milling" }
-    },
-    {
-      "key": "ai.intent.plan_step",
-      "value": { "stringValue": "step_3_milling" }
     },
     {
       "key": "ai.physical.command",
@@ -61,30 +53,6 @@
     {
       "key": "physical.telemetry.deviation",
       "value": { "doubleValue": 18.2 }
-    },
-    {
-      "key": "physical.anomaly.type",
-      "value": { "stringValue": "thermal_expansion" }
-    },
-    {
-      "key": "physical.anomaly.severity",
-      "value": { "stringValue": "warning" }
-    },
-    {
-      "key": "physical.anomaly.corrective_action",
-      "value": { "stringValue": "operator_alert" }
-    },
-    {
-      "key": "physical.test.session_id",
-      "value": { "stringValue": "session_20260619_01" }
-    },
-    {
-      "key": "physical.test.operator_mode",
-      "value": { "stringValue": "human_in_the_loop" }
-    },
-    {
-      "key": "ai.agent.id",
-      "value": { "stringValue": "milling-agent-01" }
     },
     {
       "key": "ai.human.intervention",

@@ -1,0 +1,139 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "AGESpanSchema",
+  "description": "JSON Schema for validating OpenTelemetry spans under the AGE Observability Specification",
+  "type": "object",
+  "required": ["traceId", "spanId", "name", "attributes"],
+  "properties": {
+    "traceId": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{32}$",
+      "description": "Unique 16-byte hex identifier for the trace"
+    },
+    "spanId": {
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{16}$",
+      "description": "Unique 8-byte hex identifier for the span"
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the span operation"
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["SPAN_KIND_UNSPECIFIED", "SPAN_KIND_INTERNAL", "SPAN_KIND_SERVER", "SPAN_KIND_CLIENT", "SPAN_KIND_PRODUCER", "SPAN_KIND_CONSUMER"],
+      "description": "OpenTelemetry span kind"
+    },
+    "startTimeUnixNano": {
+      "type": "integer",
+      "description": "Start time in nanoseconds since epoch"
+    },
+    "endTimeUnixNano": {
+      "type": "integer",
+      "description": "End time in nanoseconds since epoch"
+    },
+    "attributes": {
+      "oneOf": [
+        {
+          "type": "array",
+          "description": "Standard OpenTelemetry attributes array format",
+          "items": {
+            "type": "object",
+            "required": ["key", "value"],
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "value": {
+                "type": "object",
+                "oneOf": [
+                  {
+                    "required": ["stringValue"],
+                    "properties": { "stringValue": { "type": "string" } },
+                    "additionalProperties": false
+                  },
+                  {
+                    "required": ["doubleValue"],
+                    "properties": { "doubleValue": { "type": "number" } },
+                    "additionalProperties": false
+                  },
+                  {
+                    "required": ["intValue"],
+                    "properties": { "intValue": { "type": "integer" } },
+                    "additionalProperties": false
+                  },
+                  {
+                    "required": ["boolValue"],
+                    "properties": { "boolValue": { "type": "boolean" } },
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "description": "Flat attributes map format",
+          "properties": {
+            "ai.model.name": { "type": "string" },
+            "ai.model.version": { "type": "string" },
+            "ai.model.confidence": { "type": "number" },
+            "ai.prompt.hash": { "type": "string" },
+            "ai.agent.id": { "type": "string" },
+            "ai.simulation.type": { "type": "string" },
+            "ai.simulation.inputs": { "type": "string" },
+            "ai.simulation.outputs": { "type": "string" },
+            "ai.simulation.result": { "type": "string", "enum": ["passed", "failed"] },
+            "ai.decision.material": { "type": "string" },
+            "ai.intent.goal": { "type": "string" },
+            "ai.intent.plan_step": { "type": "string" },
+            "ai.intent.safety_envelope": { "type": "string" },
+            "ai.physical.command": { "type": "string" },
+            "physical.sensor.target": { "type": "string" },
+            "industrial.protocol": { "type": "string" },
+            "physical.action.status": { "type": "string" },
+            "physical.action.duration_ms": { "type": "number" },
+            "physical.telemetry.deviation": { "type": "number" },
+            "physical.anomaly.type": { "type": "string" },
+            "physical.anomaly.severity": { "type": "string", "enum": ["info", "warning", "critical"] },
+            "physical.anomaly.corrective_action": { "type": "string" },
+            "physical.test.session_id": { "type": "string" },
+            "physical.test.operator_mode": { "type": "string" },
+            "ai.human.intervention": { "type": "boolean" },
+            "ai.human.alteration": { "type": "string" },
+            "external.interaction.type": { "type": "string" }
+          }
+        }
+      ]
+    },
+    "events": {
+      "type": "array",
+      "description": "Span events representing logs or checkpoints",
+      "items": {
+        "type": "object",
+        "required": ["name", "timeUnixNano"],
+        "properties": {
+          "name": { "type": "string" },
+          "timeUnixNano": { "type": "integer" },
+          "attributes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["key", "value"],
+              "properties": {
+                "key": { "type": "string" },
+                "value": {
+                  "type": "object",
+                  "properties": {
+                    "stringValue": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

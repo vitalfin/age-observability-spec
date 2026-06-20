@@ -180,3 +180,16 @@ Span:
 To support domain-specific needs (e.g., aerospace flight phases, robotic torques, healthcare compliance parameters, and manufacturing tool statistics) without bloating the main database schema, the specification supports **Dynamic Industry Extensions**.
 
 Any trace attribute prefix starting with `aerospace.*`, `robotics.*`, `healthcare.*`, `manufacturing.*` (or any attribute not matching a core database column) is captured dynamically, serialized as a JSON object, and stored in a single `industry_extensions` text column. This allows clients to query and visualize custom domain data dynamically in dashboards.
+
+---
+
+## 7. Conformance & Validation
+
+Implementations of the AGE Observability Specification can be programmatically validated for compliance using:
+- **JSON Schemas**: Defining all core namespaces and attribute types under the `/schemas` directory. See [age_span_schema.json](./schemas/age_span_schema.json).
+- **Validation CLI**: A zero-dependency node-based linter that validates any span payload. Try running:
+  ```bash
+  node tools/validate-spec.js path/to/span.json
+  ```
+- **Conformance Test Suite**: A set of valid/invalid files under `/test-suite` which are continuously tested via GitHub Actions.
+

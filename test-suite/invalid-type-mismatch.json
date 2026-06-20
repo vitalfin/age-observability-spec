@@ -1,0 +1,16 @@
+{
+  "traceId": "7d3c0e3d09a24bb181fa3d10c2e2833d",
+  "spanId": "3c00bcf19d4e5f44",
+  "name": "CNC Milling - Type Mismatch",
+  "kind": "SPAN_KIND_INTERNAL",
+  "attributes": {
+    "ai.model.name": "prometheus-age-v1",
+    "ai.agent.id": "milling-agent-01",
+    "ai.intent.goal": "high_precision_milling",
+    "ai.physical.command": "SET_RPM",
+    "physical.sensor.target": "cnc-spindle-04",
+    "physical.action.status": "completed",
+    "physical.telemetry.deviation": "18.2",
+    "ai.human.intervention": "true"
+  }
+}

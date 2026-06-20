@@ -1,0 +1,23 @@
+{
+  "traceId": "5c1a8e3d09a24bb181fa3d10c2e2831b",
+  "spanId": "1a08bcf19d4e5f22",
+  "name": "Robotic Joint Position Execution",
+  "kind": "SPAN_KIND_INTERNAL",
+  "startTimeUnixNano": 1781836712000000,
+  "endTimeUnixNano": 1781836712800000,
+  "attributes": {
+    "ai.model.name": "clint-arm-gpt4",
+    "ai.model.version": "2.4.1-beta",
+    "ai.model.confidence": 0.72,
+    "ai.agent.id": "robotic-controller-01",
+    "ai.simulation.type": "kinematics",
+    "ai.simulation.result": "failed",
+    "ai.intent.goal": "docking",
+    "ai.physical.command": "MOVE_TO_JOINT_COORD",
+    "physical.sensor.target": "robotic-joint-j3",
+    "physical.action.status": "safety_abort",
+    "physical.action.duration_ms": 340.0,
+    "physical.telemetry.deviation": 0.045,
+    "ai.human.intervention": false
+  }
+}

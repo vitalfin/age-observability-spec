@@ -79,3 +79,25 @@ Raw system logs from Fluent Bit are tagged with the active `traceId` and `spanId
 ## 🗺️ Migration from Industrial Protocols
 
 If you are running legacy networks (Modbus RTU/TCP, OPC-UA, or MTConnect), refer to our [Migration Guide](./migration_guide.md) to learn how to translate industrial telemetry and events into OpenTelemetry traces and logs.
+
+---
+
+## 🛠️ Conformance & Tooling
+
+To ensure that your telemetry payloads conform to this specification, this repository includes built-in schemas and validation tools:
+
+### 1. JSON Schema
+The formal specification structure is defined as a JSON Schema at [schemas/age_span_schema.json](./schemas/age_span_schema.json). This schema supports both the standard OpenTelemetry nested attribute array format and a flattened key-value object format.
+
+### 2. Validation CLI Tool
+You can validate any JSON trace span locally without any external dependencies using our lightweight CLI validator:
+```bash
+node tools/validate-spec.js <path-to-span-json>
+```
+
+### 3. Conformance Test Suite
+We maintain a suite of valid and invalid spans under the [test-suite/](./test-suite/) directory. You can run all conformance tests (which also validates that the official examples in this repo don't drift from the specification):
+```bash
+node tools/run-conformance-tests.js
+```
+

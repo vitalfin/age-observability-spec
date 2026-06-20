@@ -77,6 +77,14 @@
     {
       "key": "physical.test.operator_mode",
       "value": { "stringValue": "autonomous" }
+    },
+    {
+      "key": "ai.agent.id",
+      "value": { "stringValue": "robotic-controller-01" }
+    },
+    {
+      "key": "ai.human.intervention",
+      "value": { "boolValue": false }
     }
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "traceId": "6c2b9f3d09a24bb181fa3d10c2e2832c",
+  "spanId": "2b09bcf19d4e5f33",
+  "name": "Robotic Joint Position Execution - Invalid",
+  "kind": "SPAN_KIND_INTERNAL",
+  "attributes": {
+    "ai.model.version": "2.4.1-beta",
+    "ai.agent.id": "robotic-controller-01",
+    "ai.intent.goal": "docking",
+    "ai.physical.command": "MOVE_TO_JOINT_COORD",
+    "physical.sensor.target": "robotic-joint-j3",
+    "physical.action.status": "safety_abort",
+    "ai.human.intervention": false
+  }
+}
