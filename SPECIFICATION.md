@@ -90,10 +90,10 @@ These attributes capture manual overrides, overrides of limits, and human-in-the
 
 ---
 
-## Trace & Log Correlation via Fluent Bit / OTel Collector
+## Trace & Log Correlation via Log Forwarder / Collector
 
-Raw logs captured from edge PLC and CNC devices by **Fluent Bit** are injected with the active `trace_id` and `span_id` of the propagating context.
-During ingestion, these log records are persisted and linked directly to the trace session. In Grafana or other observability visualizers, a user can expand a specific telemetry plot point (e.g., a physical deviation anomaly) and view the exact stream of logs that led up to that point.
+Raw logs captured from edge PLC and CNC devices by a log forwarder (such as Fluent Bit) are injected with the active `trace_id` and `span_id` of the propagating context.
+During ingestion, these log records are persisted and linked directly to the trace session. In observability dashboards, a user can expand a specific telemetry plot point (e.g., a physical deviation anomaly) and view the exact stream of logs that led up to that point.
 
 ---
 

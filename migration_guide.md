@@ -18,7 +18,7 @@ To bridge this gap, an **Industrial Telemetry Gateway** (or Edge IoT gateway) ac
 ┌──────────────┐                  ┌─────────────┐                  ┌──────────────────────┐
 │  Industrial  │  Modbus/OPC-UA   │ Telemetry   │   OTel Traces    │ Ingest/Observability │
 │  Machinery   ├─────────────────►│ Gateway     ├─────────────────►│ Platform             │
-│  (PLCs/RTUs) │  (Registers/PVs) │ (Edge AI)   │   (HTTP/gRPC)    │ (PhysiTrace/Grafana) │
+│  (PLCs/RTUs) │  (Registers/PVs) │ (Edge AI)   │   (HTTP/gRPC)    │ (Backend/Dashboard)  │
 └──────────────┘                  └─────────────┘                  └──────────────────────┘
 ```
 
@@ -249,11 +249,11 @@ def process_mtconnect_xml(xml_payload, ai_context):
 
 ---
 
-## 5. Logs Correlation Pipeline (Fluent Bit to OTel Collector)
+## 5. Logs Correlation Pipeline (Log Forwarder to Collector)
 
-Fluent Bit harvesting edge machine logs (such as Linux syslog, ROS node output, or raw CNC debug logs) extracts trace propagation headers (`trace_id` / `span_id`) when available. 
+A log forwarder (such as Fluent Bit) harvesting edge machine logs (such as Linux syslog, ROS node output, or raw CNC debug logs) extracts trace propagation headers (`trace_id` / `span_id`) when available. 
 
-A standard Fluent Bit configuration formats log lines into JSON and links them to the OTel trace context:
+A standard log forwarder configuration formats log lines into JSON and links them to the OTel trace context:
 
 ```
 [FILTER]
@@ -265,10 +265,10 @@ A standard Fluent Bit configuration formats log lines into JSON and links them t
 [OUTPUT]
     Name         opentelemetry
     Match        *
-    Host         otel-collector.eks.local
+    Host         otel-collector.local
     Port         4318
     Metrics_uri  /v1/metrics
     Logs_uri     /v1/logs
 ```
 
-The OpenTelemetry Collector correlates these logs and routes them to PhysiTrace's `POST /v1/logs` endpoint. This allows logs to be queried by their parent `traceId` using the query API (`GET /v1/logs?traceId=...`), aligning system-level logs directly with high-level AGE design sessions.
+The collector correlates these logs and routes them to the observability backend's `POST /v1/logs` endpoint. This allows logs to be queried by their parent `traceId` using the query API (`GET /v1/logs?traceId=...`), aligning system-level logs directly with high-level AGE design sessions.

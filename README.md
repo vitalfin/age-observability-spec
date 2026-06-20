@@ -10,7 +10,7 @@ This repository defines the open-source **AGE Observability Specification**. It 
 
 ## 💡 Why the AGE Observability Specification?
 
-Traditional observability tools (like OpenTelemetry, Datadog, or Dynatrace) focus on pure software stacks: HTTP requests, database transactions, and microservice RPCs.
+Traditional software observability tools focus on pure software stacks: HTTP requests, database transactions, and microservice RPCs.
 
 In **AGE (Artificial General Engineering)** systems across industries such as aerospace, robotics, healthcare, and manufacturing, AI models generate and analyze designs (CAD), run physical simulations (CAE), program shop floor manufacturing software (CAM), and orchestrate operations on physical machinery (MES/PLM). Deviations in this pipeline can cause catastrophic mechanical damage, product failures, or safety incidents.
 
@@ -45,9 +45,9 @@ See [SPECIFICATION.md](./SPECIFICATION.md) for the full list of attributes, type
 
 ### 1. Ingesting Telemetry
 
-Telemetry carrying these semantic conventions can be ingested by any OpenTelemetry-compatible collector. In an production deployment running on **AWS EKS**:
-1. **Fluent Bit** runs on edge devices to collect raw device logs.
-2. The central **OpenTelemetry Collector** aggregates, correlates traces and logs (using `traceId` context propagation), and sends them to the ingestion service.
+Telemetry carrying these semantic conventions can be ingested by any OpenTelemetry-compatible collector. In a production deployment:
+1. A log forwarder (such as Fluent Bit) runs on edge devices to collect raw device logs.
+2. A central collector (such as the OpenTelemetry Collector) aggregates, correlates traces and logs (using `traceId` context propagation), and sends them to the ingestion service.
 
 ```json
 {
