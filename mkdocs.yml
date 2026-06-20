@@ -1,0 +1,42 @@
+site_name: AGE Observability Specification
+site_description: Open-source semantic conventions for telemetry in Artificial General Engineering (AGE) systems.
+site_url: https://vitalf.github.io/age-observability-spec/
+
+theme:
+  name: material
+  palette:
+    scheme: slate
+    primary: teal
+    accent: teal
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+
+nav:
+  - Overview: README.md
+  - Specification:
+    - Namespace Hierarchy: specification/README.md
+    - AI Decision: specification/conventions/ai-decision.md
+    - AI Intent: specification/conventions/ai-intent.md
+    - Physical Control: specification/conventions/physical-control.md
+    - Physical Action & Anomaly: specification/conventions/physical-action.md
+    - Human Interaction: specification/conventions/human-interaction.md
+    - Dynamic Extensions: specification/conventions/dynamic-extensions.md
+  - Conformance & Schemas:
+    - Conformance Verification: specification/conformance.md
+  - Governance & Evolution:
+    - Contributing: CONTRIBUTING.md
+    - Adopters: ADOPTERS.md
+
+# Build configuration
+docs_dir: .
+site_dir: site
+
+# Exclude unnecessary files from copying to the built site
+exclude_docs:
+  - "node_modules/**"
+  - ".git/**"
+  - ".github/**"
+  - "test-suite/**"
+  - "tools/**"
