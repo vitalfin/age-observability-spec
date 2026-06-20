@@ -2,8 +2,14 @@
  * Reference Implementation: AGE Observability Telemetry Generator (Node.js)
  * 
  * This file serves as a reference showing how an application or edge agent
- * programmatically generates a trace span that complies with the AGE Observability Specification,
- * and how it can be validated prior to transmission.
+ * programmatically generates a trace span that complies with the AGE Observability Specification.
+ * 
+ * Directory / Spec References:
+ * - Specification: specification/README.md
+ * - JSON Schema: schemas/age_span_schema.json
+ * - Protobuf Spec: schemas/age_span.proto
+ * - Conformance Suite: test-suite/ (valid/ and invalid/)
+ * - Validation CLI: tools/validate-spec.js
  */
 
 const fs = require('fs');

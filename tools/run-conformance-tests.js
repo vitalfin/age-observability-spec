@@ -23,17 +23,22 @@ const colors = {
 
 const validatorPath = path.join(__dirname, 'validate-spec.js');
 
-const testCases = [
-  // Conformance suite
-  { file: 'test-suite/valid-cnc-spindle.json', expectPass: true },
-  { file: 'test-suite/valid-robotic-arm.json', expectPass: true },
-  { file: 'test-suite/invalid-missing-required.json', expectPass: false },
-  { file: 'test-suite/invalid-type-mismatch.json', expectPass: false },
-  
-  // Official Examples
-  { file: 'examples/cnc_spindle.json', expectPass: true },
-  { file: 'examples/robotic_arm.json', expectPass: true }
-];
+const testCases = [];
+
+const addTestsFromDir = (dirPath, relativeDir, expectPass) => {
+  const absoluteDir = path.resolve(__dirname, '..', dirPath);
+  if (fs.existsSync(absoluteDir)) {
+    fs.readdirSync(absoluteDir).forEach(file => {
+      if (file.endsWith('.json')) {
+        testCases.push({ file: `${relativeDir}/${file}`, expectPass });
+      }
+    });
+  }
+};
+
+addTestsFromDir('test-suite/valid', 'test-suite/valid', true);
+addTestsFromDir('test-suite/invalid', 'test-suite/invalid', false);
+addTestsFromDir('examples', 'examples', true);
 
 let failed = false;
 

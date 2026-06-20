@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package age.observability.v1;
+
+// AGESpan represents an execution span conforming to the AGE Observability Specification.
+message AGESpan {
+  // Unique 16-byte hex identifier for the trace (32 characters hex string)
+  string trace_id = 1;
+
+  // Unique 8-byte hex identifier for the span (16 characters hex string)
+  string span_id = 2;
+
+  // Human-readable name of the span operation
+  string name = 3;
+
+  // OpenTelemetry-aligned SpanKind enum
+  enum SpanKind {
+    SPAN_KIND_UNSPECIFIED = 0;
+    SPAN_KIND_INTERNAL = 1;
+    SPAN_KIND_SERVER = 2;
+    SPAN_KIND_CLIENT = 3;
+    SPAN_KIND_PRODUCER = 4;
+    SPAN_KIND_CONSUMER = 5;
+  }
+  SpanKind kind = 4;
+
+  // Start time in nanoseconds since epoch
+  uint64 start_time_unix_nano = 5;
+
+  // End time in nanoseconds since epoch
+  uint64 end_time_unix_nano = 6;
+
+  // List of key-value pairs representing AGE attributes
+  repeated KeyValue attributes = 7;
+
+  // Events representing checkpoints or raw device logs associated with the span
+  repeated Event events = 8;
+}
+
+// KeyValue represents an attribute key-value pair.
+message KeyValue {
+  string key = 1;
+  AnyValue value = 2;
+}
+
+// AnyValue represents a typed attribute value.
+message AnyValue {
+  oneof value {
+    string string_value = 1;
+    double double_value = 2;
+    int64 int_value = 3;
+    bool bool_value = 4;
+  }
+}
+
+// Event represents a milestone or log entry recorded during the span's lifecycle.
+message Event {
+  string name = 1;
+  uint64 time_unix_nano = 2;
+  repeated KeyValue attributes = 3;
+}

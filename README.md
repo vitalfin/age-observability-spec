@@ -37,7 +37,7 @@ The conventions are divided into namespaces under OpenTelemetry:
 | **Physical Control & Protocols** | `ai.physical.*` / `physical.sensor.*` / `industrial.protocol` | Tracks commands issued, target actuators, and legacy/industrial protocols (OPC-UA, MTConnect). |
 | **Action, Anomaly & Human** | `physical.action.*` / `physical.anomaly.*` / `ai.human.*` / `external.interaction.*` | Captures expected vs. actual states, mechanical anomalies, corrective actions, human overrides, manual tweaks, and external events. |
 
-See [SPECIFICATION.md](./SPECIFICATION.md) for the full list of attributes, types, and requirements.
+See [specification/README.md](./specification/README.md) for the full list of attributes, types, and requirements. You can also view the main index at [SPECIFICATION.md](./SPECIFICATION.md).
 
 ---
 
@@ -86,8 +86,9 @@ If you are running legacy networks (Modbus RTU/TCP, OPC-UA, or MTConnect), refer
 
 To ensure that your telemetry payloads conform to this specification, this repository includes built-in schemas and validation tools:
 
-### 1. JSON Schema
-The formal specification structure is defined as a JSON Schema at [schemas/age_span_schema.json](./schemas/age_span_schema.json). This schema supports both the standard OpenTelemetry nested attribute array format and a flattened key-value object format.
+### 1. Formal Schemas
+* **JSON Schema**: The formal specification structure is defined as a JSON Schema at [schemas/age_span_schema.json](./schemas/age_span_schema.json). This schema supports both the standard OpenTelemetry nested attribute array format and a flattened key-value object format.
+* **Protobuf Schema**: A formal `proto3` schema is defined at [schemas/age_span.proto](./schemas/age_span.proto) to support industrial systems using gRPC or binary message serialization.
 
 ### 2. Validation CLI Tool
 You can validate any JSON trace span locally without any external dependencies using our lightweight CLI validator:
@@ -96,7 +97,7 @@ node tools/validate-spec.js <path-to-span-json>
 ```
 
 ### 3. Conformance Test Suite
-We maintain a suite of valid and invalid spans under the [test-suite/](./test-suite/) directory. You can run all conformance tests (which also validates that the official examples in this repo don't drift from the specification):
+We maintain a suite of valid and invalid spans organized under the [test-suite/valid/](./test-suite/valid/) and [test-suite/invalid/](./test-suite/invalid/) directories. You can run the conformance tests (which dynamically scans these directories and validates that the official examples in this repo don't drift from the specification):
 ```bash
 node tools/run-conformance-tests.js
 ```

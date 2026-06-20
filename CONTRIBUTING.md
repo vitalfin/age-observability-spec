@@ -12,16 +12,16 @@ If you find ambiguities, missing namespaces, or incorrect definitions in the spe
 2. Provide concrete examples from your industry (e.g., aerospace, robotics, manufacturing) showing why the change is necessary.
 
 ### 2. Proposing Semantic Convention Updates (RFC Process)
-To ensure backwards compatibility and high standards across industries, any change to the attributes namespace must follow our RFC process:
-1. Create a markdown file in the `rfcs/` directory using the name `RFC-XXXX-short-title.md`.
-2. Detail the proposed namespace, target attributes, data types, requirement levels (Required, Recommended, Optional), and concrete payload examples.
-3. Open a Pull Request. Maintainers and community members will review, suggest tweaks, and vote on adoption.
+To ensure backwards compatibility and high standards across industries, any change to the attributes namespace **MUST** follow our RFC process:
+1. Copy the RFC template located at `rfcs/0000-template.md` to a new file: `rfcs/RFC-XXXX-short-title.md` (where XXXX is the next available sequential number).
+2. Fill out the proposal details (namespace, target attributes, data types, requirement levels, and payload examples).
+3. Open a Pull Request. Maintainers and community members will review and vote on adoption.
 
-### 3. Modifying Schemas & Tooling
-If you are modifying the JSON Schema or validation tools:
-- The JSON schemas are located in `/schemas`.
-- Validation tools are in `/tools`.
-- **Constraint**: All validation tools must run with standard, vanilla Node.js without requiring external dependencies (`node_modules`) to keep the repo clean and zero-friction for downstream projects.
+### 3. Modifying Schemas, Specifications & Tooling
+* **Specifications**: Documentation files are modular and located in `specification/` (e.g., `specification/conventions/`).
+* **Schemas**: JSON schemas are in `schemas/age_span_schema.json`, and Protobuf definitions are in `schemas/age_span.proto`.
+* **Validation CLI**: Located in `tools/validate-spec.js`.
+* **Constraint**: All validation tools **MUST** run with standard, vanilla Node.js without requiring external dependencies (`node_modules`) to keep the repo clean and zero-friction for downstream users.
 
 ---
 
@@ -33,5 +33,9 @@ Before opening a PR:
    node tools/run-conformance-tests.js
    ```
 2. Verify all tests pass.
-3. Make sure any new attributes are documented in `SPECIFICATION.md` and added to `schemas/age_span_schema.json`.
-4. Ensure your example JSON files are updated and valid. The CI/CD pipeline validates all example files in the repository.
+3. Make sure any new attributes are:
+   - Added to the relevant modular markdown file under `specification/conventions/`.
+   - Added to the JSON schema: `schemas/age_span_schema.json`.
+   - Added to the Protobuf schema: `schemas/age_span.proto`.
+4. Ensure your example JSON files under `examples/` are updated and valid.
+5. If adding test fixtures, place them under `test-suite/valid/` (for payloads that MUST pass) or `test-suite/invalid/` (for payloads that MUST fail). The CI/CD pipeline validates all test files dynamically.
