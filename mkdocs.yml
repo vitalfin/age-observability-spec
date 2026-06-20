@@ -34,9 +34,9 @@ docs_dir: .
 site_dir: site
 
 # Exclude unnecessary files from copying to the built site
-exclude_docs:
-  - "node_modules/**"
-  - ".git/**"
-  - ".github/**"
-  - "test-suite/**"
-  - "tools/**"
+exclude_docs: |
+  node_modules/
+  .git/
+  .github/
+  test-suite/
+  tools/
