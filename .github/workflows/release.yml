@@ -37,7 +37,7 @@ jobs:
 
     - name: Build and Deploy Documentation
       run: |
-        mkdocs gh-deploy --force
+        bash tools/build-docs.sh gh-deploy
 
     - name: Create GitHub Release
       uses: softprops/action-gh-release@v2

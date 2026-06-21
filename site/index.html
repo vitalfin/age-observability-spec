@@ -1074,7 +1074,7 @@
 </tr>
 </tbody>
 </table>
-<p>See <a href="specification/">specification/README.md</a> for the full list of attributes, types, and requirements. You can also view the main index at <a href="./SPECIFICATION.md">SPECIFICATION.md</a>.</p>
+<p>See <a href="specification/">specification/README.md</a> for the full list of attributes, types, and requirements. You can also view the main index at <a href="SPECIFICATION/">SPECIFICATION.md</a>.</p>
 <hr />
 <h2 id="getting-started">🚀 Getting Started</h2>
 <h3 id="1-ingesting-telemetry">1. Ingesting Telemetry</h3>
@@ -1104,14 +1104,14 @@
 <p>Raw system logs from Fluent Bit are tagged with the active <code>traceId</code> and <code>spanId</code>. This allows teams to query all logs associated with a specific telemetry point to diagnose why a deviation occurred.</p>
 <hr />
 <h2 id="migration-from-industrial-protocols">🗺️ Migration from Industrial Protocols</h2>
-<p>If you are running legacy networks (Modbus RTU/TCP, OPC-UA, or MTConnect), refer to our <a href="./migration_guide.md">Migration Guide</a> to learn how to translate industrial telemetry and events into OpenTelemetry traces and logs.</p>
+<p>If you are running legacy networks (Modbus RTU/TCP, OPC-UA, or MTConnect), refer to our <a href="migration_guide/">Migration Guide</a> to learn how to translate industrial telemetry and events into OpenTelemetry traces and logs.</p>
 <hr />
 <h2 id="conformance-tooling">🛠️ Conformance &amp; Tooling</h2>
 <p>To ensure that your telemetry payloads conform to this specification, this repository includes built-in schemas and validation tools:</p>
 <h3 id="1-formal-schemas">1. Formal Schemas</h3>
 <ul>
-<li><strong>JSON Schema</strong>: The formal specification structure is defined as a JSON Schema at <a href="./schemas/age_span_schema.json">schemas/age_span_schema.json</a>. This schema supports both the standard OpenTelemetry nested attribute array format and a flattened key-value object format.</li>
-<li><strong>Protobuf Schema</strong>: A formal <code>proto3</code> schema is defined at <a href="./schemas/age_span.proto">schemas/age_span.proto</a> to support industrial systems using gRPC or binary message serialization.</li>
+<li><strong>JSON Schema</strong>: The formal specification structure is defined as a JSON Schema at <a href="schemas/age_span_schema.json">schemas/age_span_schema.json</a>. This schema supports both the standard OpenTelemetry nested attribute array format and a flattened key-value object format.</li>
+<li><strong>Protobuf Schema</strong>: A formal <code>proto3</code> schema is defined at <a href="schemas/age_span.proto">schemas/age_span.proto</a> to support industrial systems using gRPC or binary message serialization.</li>
 </ul>
 <h3 id="2-validation-cli-tool">2. Validation CLI Tool</h3>
 <p>You can validate any JSON trace span locally without any external dependencies using our lightweight CLI validator:</p>
