@@ -14,7 +14,7 @@ theme:
     - content.code.copy
 
 nav:
-  - Overview: README.md
+  - Overview: index.md
   - Specification:
     - Namespace Hierarchy: specification/README.md
     - AI Decision: specification/conventions/ai-decision.md
@@ -30,13 +30,5 @@ nav:
     - Adopters: ADOPTERS.md
 
 # Build configuration
-docs_dir: .
+docs_dir: docs
 site_dir: site
-
-# Exclude unnecessary files from copying to the built site
-exclude_docs: |
-  node_modules/
-  .git/
-  .github/
-  test-suite/
-  tools/
