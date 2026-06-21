@@ -20,6 +20,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# MkDocs build directory
+site/
+
 # Virtual environments
 .venv/
 
